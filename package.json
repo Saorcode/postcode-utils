@@ -1,0 +1,23 @@
+{
+  "name": "@saorcode/postcode-utils",
+  "version": "0.0.1",
+  "description": "Utilities for dealing with Irish postcodes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saorcode/postcode-utils.git"
+  },
+  "author": "Fionn Kelleher <fionn@sigkell.xyz>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Saorcode/postcode-utils/issues"
+  },
+  "homepage": "https://github.com/Saorcode/postcode-utils#readme",
+  "devDependencies": {
+    "typescript": "^3.9.3"
+  }
+}
