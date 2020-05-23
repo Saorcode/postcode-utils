@@ -46,9 +46,9 @@ const routingKeys = {
   }
 }
 
-const knownRoutingKeys = routingKeys.all()
+export const knownRoutingKeys = routingKeys.all()
 
-class Postcode {
+export class Postcode {
   routingKey: string
   identifier: string
 
@@ -66,46 +66,59 @@ class Postcode {
   }
 }
 
+export class ParseError extends Error {
+  position: number
+
+  constructor(message: string, position: number) {
+    super(message)
+    this.position = position
+  }
+}
+
 const regexes = {
   letter: /[A-Z]/,
-  number: /[1-9]/,
+  number: /[0-9]/,
   alphanumeric: /[A-Z0-9]/,
   whitespace: /[\s]/g
 }
 
-function parsePostcode(input: string) : Postcode {
+export function parsePostcode(input: string) : Postcode {
   // strip any whitespace from the string
   input = input.replace(regexes.whitespace, "")
 
   // postcodes are exactly 7 characters long, so we'll 
   if (input.length > 7) {
-    throw new Error("Must contain no more than 7 non-whitespace characters")
+    let message = "Must contain no more than 7 non-whitespace characters"
+    throw new ParseError(message, 7)
   }
 
   if (input.length < 7) {
-    throw new Error("Must contain at least 7 non-whitespace characters")
+    let message = "Must contain at least 7 non-whitespace characters"
+    throw new ParseError(message, input.length - 1)
   }
 
   if (!input[0].match(regexes.letter)) {
-    throw new Error("Index 0 must be an uppercase letter.")
+    let message = "Character must be an uppercase letter."
+    throw new ParseError(message, 0)
   }
 
   if (!input[1].match(regexes.number)) {
-    throw new Error("Index 1 must be a number.")
+    let message = "Character must be a number."
+    throw new ParseError(message, 1)
   }
 
   if (!input[2].match(regexes.number)) {
-    throw new Error("Index 2 must be a number.")
+    let message = "Character must be a number."
+    throw new ParseError("Character must be a number.", 2)
   }
 
   for (let i = 3; i < 7; i++) {
     if (!input[i].match(regexes.alphanumeric)) {
-      throw new Error(`Index ${i} must be an uppercase letter or number.`)
+      let message = "Character must be an uppercase letter or number."
+      throw new ParseError(message, i)
     }
   }
 
   return new Postcode(input.slice(0,3), input.slice(3))
 
 }
-
-console.log(parsePostcode("Y3  5H   D9 9").toString())
